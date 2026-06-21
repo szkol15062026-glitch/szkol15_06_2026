@@ -1,0 +1,49 @@
+SCHEDULERY W PYTHONIE - rozpiska
+
+1) Czyste schedulery (lekkie, jeden proces, bez brokera)
+- APScheduler - najbogatszy, interwaly / cron / konkretna data, umie
+  zapamietywac zadania (persystencja). instalacja: pip install apscheduler
+- schedule - najprostrzy i czytelny, ale musisz sam napisac petle while True.
+  pip install schedule
+- aiocron - skladnia cron ale dla asyncio (aplikacje async). pip install aiocron
+- Rocketry - nowoczesny, pozwala robic warunki typu "co 5 min ale tylko jak
+  plik istnieje". pip install rocketry
+
+2) Kolejki zadan (jak scelery, kiedy zadan jest duzo)
+- Huey - lekka, ma zadania okresowe, dziala nawet na sqlite (nie musisz miec
+  redisa). broker: redis albo sqlite
+- RQ (+ rq-scheduler) - bardzo prosta i popularna. broker: redis
+- Dramatiq (+ periodiq) - nowoczesna alternatywa dla scelery.
+  broker: redis albo rabbitmq
+- arq - dla aplikacji asynchroniczych (asyncio). broker: redis
+- TaskTiger - nacisk na niezawodnosc. broker: redis
+
+3) Systemowe (niezalezne od aplikacji)
+- cron (linux) / Task Scheduler (windows) - odpala skrypt co jakis czas,
+  sam sie budzi, nie musi chodzic zadna aplikacja
+- python ma tez wbudowane: time.sleep w petli, sched, threading.Timer
+
+4) threading.Timer - wbudowane, ale UWAGA bywa problematyczne
+- Timer odpala funkcje tylko RAZ po zadanym czasie. Zeby byl cykl trzeba na
+  koncu kazdego wykonania zaplanowac kolejny timer (samo planujacy sie timer).
+- najwiekszy problem: jak zadanie rzuci blad/wyjatek to linijka ktora planuje
+  nastepny timer sie nie wykona.
+- nie ma trybu cron (codziennie o 8:00), nie nadrabia przegapionych odpalen,
+  kazdy cykl to nowy watek, ciezko ogarnac wiele zadan na raz.
+
+
+
+#1
+-https://pypi.org/project/APScheduler/
+-https://schedule.readthedocs.io/en/stable/ https://pypi.org/project/schedule/
+-https://pypi.org/project/aiocron/
+-https://pypi.org/project/rocketry/ https://docs.rocketpy.org/en/v0.13.1/
+
+#2 
+-https://pypi.org/project/huey/
+-https://pypi.org/project/rq/ 
+-https://pypi.org/project/dramatiq/
+-https://pypi.org/project/arq/
+-https://pypi.org/project/tasktiger/
+
+

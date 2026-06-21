@@ -1,0 +1,40 @@
+ CO TRZEBA, ZEBY ODPALIC CELERY W PYTHONIE
+
+KONCEPCJA
+---------
+Celery NIE jest skryptem, ktory sie "uruchamia" jednym poleceniem.
+To system z kilku osobnych procesow, ktore musza dzialac jednoczesnie:
+
+   TWOJ KOD  --(wyslij zadanie)-->  BROKER  -->  WORKER (wykonuje)
+                                   (kolejka)
+
++ opcjonalnie BEAT = "budzik" wysylajacy zadania wg harmonogramu
++ opcjonalnie RESULT BACKEND = miejsce na wyniki zadan
+
+Celery NIE wymaga Django - dziala w czystym Pythonie, Flask, FastAPI itp.
+
+
+SKLADNIKI (co musi byc)
+-----------------------
+1. PAKIET celery            ->  pip install celery
+2. BROKER (kolejka)         ->  jedna z opcji:
+      - Redis (najczesciej)     redis://localhost:6379/0   (wymaga Redisa)
+      - RabbitMQ                                            (wymaga RabbitMQ)
+      - filesystem:// (na plikach, do nauki, bez serwera)
+3. WORKER                   ->  proces, ktory wykonuje zadania
+4. BEAT (tylko gdy okresowe)->  proces wysylajacy zadania wg harmonogramu
+
+
+NAJCZESTSZE PULAPKI
+-------------------
+- "python tasks.py" NIC nie wykona - to tylko definicja. Wykonuje WORKER.
+- Na Windows worker bez --pool=solo sie wywala.
+- Bez dzialajacego brokera: blad "Connection refused" na porcie brokera.
+- print() w zadaniu pojawia sie w oknie WORKERA, nie tam gdzie wysylasz.
+- "celery: nie znaleziono pliku" -> uzyj  python -m celery ...
+
+
+
+
+
+
